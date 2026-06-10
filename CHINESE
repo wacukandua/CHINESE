@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Chinese Quest</title>
+<style>
+body{
+    font-family:Arial,sans-serif;
+    text-align:center;
+    background:#f5f7ff;
+    padding:20px;
+}
+.card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    max-width:500px;
+    margin:auto;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+input{
+    padding:10px;
+    width:80%;
+    margin:10px;
+}
+button{
+    padding:10px 20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+.correct{color:green;}
+.wrong{color:red;}
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h1>🐼 Chinese Quest</h1>
+    <h3 id="word"></h3>
+    <p id="hint"></p>
+
+    <input id="answer" placeholder="Type answer">
+    <br>
+    <button onclick="check()">Submit</button>
+
+    <h3>XP: <span id="xp">0</span></h3>
+    <h3>Level: <span id="level">1</span></h3>
+
+    <p id="result"></p>
+</div>
+
+<script>
+const words = [
+{ch:"你好", en:"hello", py:"nǐ hǎo"},
+{ch:"谢谢", en:"thank you", py:"xièxie"},
+{ch:"茶", en:"tea", py:"chá"},
+{ch:"水", en:"water", py:"shuǐ"},
+{ch:"朋友", en:"friend", py:"péngyou"},
+{ch:"猫", en:"cat", py:"māo"},
+{ch:"狗", en:"dog", py:"gǒu"}
+];
+
+let current;
+let xp = 0;
+
+function newQuestion(){
+    current = words[Math.floor(Math.random()*words.length)];
+    document.getElementById("word").innerText = current.ch;
+    document.getElementById("hint").innerText = "Translate to English";
+    document.getElementById("answer").value = "";
+}
+
+function check(){
+    let ans = document.getElementById("answer").value.toLowerCase();
+
+    if(ans === current.en.toLowerCase()){
+        xp += 10;
+        document.getElementById("result").innerHTML =
+            `<span class='correct'>✅ Correct! ${current.py}</span>`;
+    }else{
+        document.getElementById("result").innerHTML =
+            `<span class='wrong'>❌ ${current.en} (${current.py})</span>`;
+    }
+
+    document.getElementById("xp").innerText = xp;
+    document.getElementById("level").innerText =
+        Math.floor(xp/50)+1;
+
+    setTimeout(newQuestion,1500);
+}
+
+newQuestion();
+</script>
+
+</body>
+</html>
